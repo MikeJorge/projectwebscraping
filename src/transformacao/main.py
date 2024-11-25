@@ -33,8 +33,16 @@ df['new_price_centavos'] = df['new_price_centavos'].fillna(0).astype(float)
 df['reviews_rating_number'] = df['reviews_rating_number'].fillna(0).astype(float)
 
 # Remover os parênteses das colunas review_amount
-df['reviews_amount'] = df['reviews_amount'].str.replace('[\(\)]','', regex=True)
-df['reviews_amount'] = df['reviews_amount'].fillna(0).astype(int)
+df['reviews_amount'] = df['reviews_amount'].astype(str).str.replace(r'[\(\)]', '', regex=True)
+
+# Remover caracteres indesejados e garantir que apenas números estejam na coluna
+df['reviews_amount'] = df['reviews_amount'].str.extract(r'(\d+)', expand=False)
+
+# Substituir valores nulos por zero
+df['reviews_amount'] = df['reviews_amount'].fillna(0)
+
+# Converter para inteiro
+df['reviews_amount'] = df['reviews_amount'].astype(int)
 
 # Tratar os preços como floats e calcular os valores totais
 df['old_price'] = df['old_price_reais'] + df['old_price_centavos'] / 100
