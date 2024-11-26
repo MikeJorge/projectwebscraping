@@ -5,10 +5,8 @@ import streamlit as st
 
 # Função para obter o caminho absoluto do banco de dados
 def get_database_path():
-    # Diretório do script atual
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    # Caminho completo para o banco de dados
-    return os.path.join(current_dir, 'data', 'quotes.db')
+    return os.path.join(current_dir, '..', '..', 'data', 'quotes.db')
 
 # Função para verificar se o banco de dados existe
 def check_database_exists(db_path):
@@ -18,13 +16,13 @@ def check_database_exists(db_path):
 
 # Função principal
 def main():
-    # Obter o caminho absoluto do banco de dados
+    # Obter o caminho do banco de dados
     db_path = get_database_path()
 
-    # Verificar se o banco de dados existe
+    # Verificar a existência do banco de dados
     check_database_exists(db_path)
 
-    # Tentar conectar ao banco de dados e carregar os dados
+    # Conectar ao banco de dados e carregar os dados
     try:
         conn = sqlite3.connect(db_path)
         df = pd.read_sql_query("SELECT * FROM mercadolivre_itens", conn)
@@ -39,18 +37,9 @@ def main():
     # KPIs principais
     st.subheader('KPIs principais do sistema')
     col1, col2, col3 = st.columns(3)
-
-    # KPI 1: Número total de itens
-    total_itens = df.shape[0]
-    col1.metric(label="Número total de itens", value=total_itens)
-
-    # KPI 2: Número de marcas únicas
-    unique_brands = df['brand'].nunique()
-    col2.metric(label="Número de marcas únicas", value=unique_brands)
-
-    # KPI 3: Preço médio novo (em reais)
-    average_new_price = df['new_price'].mean()
-    col3.metric(label="Preço médio novo (R$)", value=f"{average_new_price:.2f}")
+    col1.metric(label="Número total de itens", value=df.shape[0])
+    col2.metric(label="Número de marcas únicas", value=df['brand'].nunique())
+    col3.metric(label="Preço médio novo (R$)", value=f"{df['new_price'].mean():.2f}")
 
     # Marcas mais encontradas
     st.subheader('Marcas mais encontradas até a página 25°')
@@ -85,6 +74,6 @@ def main():
     col1.bar_chart(df_non_zero_reviews.groupby('brand')['reviews_rating_number'].mean())
     col2.write(satisfaction_by_brand)
 
-# Executar a aplicação principal
+# Garantir que a função main seja chamada apenas quando o script for executado diretamente
 if __name__ == "__main__":
     main()
