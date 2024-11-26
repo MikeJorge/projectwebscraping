@@ -33,7 +33,9 @@ Scrapy: Framework para web scraping;
 SQLite: Banco de dados para armazenamento dos dados coletados;
 pandas: Processamento e manipulação de dados;
 Streamlit: Criação de dashboard interativo.
+
 📂 Estrutura do Projeto
+
 ````pl
 projectwebscraping/
 ├── src/
@@ -44,10 +46,12 @@ projectwebscraping/
 ├── data/
 │   └── quotes.db  # Banco de dados SQLite com os dados extraídos
 └── README.md       # Documentação do projeto
+````
 
 📈 Como Executar
 1. Rodar o Web Scraping
 Para coletar os dados diretamente do marketplace, execute o comando abaixo na pasta onde o Scrapy está configurado:
+
 ````bash
 scrapy crawl mercadolivre -o ../../data/data.jsonl
 ````
@@ -64,6 +68,7 @@ Para visualizar os insights, rode o Streamlit para carregar o dashboard:
 
 ````bash
 streamlit run src/dashboard/app.py
+````
 
 📝 Licença
 Este projeto é de código aberto e está licenciado sob os termos da MIT License.
